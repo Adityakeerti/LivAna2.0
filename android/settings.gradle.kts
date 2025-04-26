@@ -13,13 +13,35 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url = uri("https://storage.googleapis.com/download.flutter.io")
+        }
     }
 }
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
     id("com.android.application") version "8.7.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 }
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url = uri("https://storage.googleapis.com/download.flutter.io")
+        }
+    }
+}
+
+rootProject.name = "android"
 include(":app")
+
+// Set Kotlin version
+val kotlinVersion = "2.1.0"
+ext {
+    set("kotlin_version", kotlinVersion)
+}

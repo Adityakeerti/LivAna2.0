@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../widgets/google_sign_in_button.dart';
 
 class StudentLoginScreen extends StatefulWidget {
   @override
@@ -76,42 +77,15 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> with SingleTick
                     SizedBox(height: 30),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 50),
-                          backgroundColor: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        onPressed: () {
-                          // TODO: Implement Google Sign In
-                          Navigator.pushNamed(context, '/studentHome');
-                        },
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/google_logo.png',
-                                height: 20,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Sign up with Google',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.3),
+                      child: GoogleSignInButton(),
+                    ).animate().fadeIn(duration: 600.ms).slideY(),
                     SizedBox(height: 20),
+                    Text(
+                      'Or continue with email',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ).animate().fadeIn(duration: 600.ms),
                   ],
                 ),
               ),

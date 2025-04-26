@@ -1,8 +1,13 @@
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.3.15")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0")
     }
+}
+
+plugins {
+    // Add the dependency for the Google services Gradle plugin
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
 val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
@@ -12,6 +17,7 @@ subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
