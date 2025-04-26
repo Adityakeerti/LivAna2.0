@@ -14,6 +14,8 @@ import 'screens/student/forum_screen.dart';
 import 'screens/business/business_login_screen.dart';
 import 'screens/business/business_selection_screen.dart';
 import 'screens/business/business_form_landing_screen.dart';
+import 'screens/student/student_name_screen.dart';
+import 'screens/business/business_name_screen.dart';
 
 
 // Student Screens
@@ -47,6 +49,7 @@ class LivAnaApp extends StatelessWidget {
       routes: {
         // Student Routes
         '/student': (context) => StudentLoginScreen(),
+        '/studentName': (context) => StudentNameScreen(),
         '/studentHome': (context) => StudentHomeScreen(),
         '/serviceSelection': (context) => ServiceSelectionScreen(),
         '/pgs': (context) => PgsScreen(),
@@ -56,6 +59,7 @@ class LivAnaApp extends StatelessWidget {
 
         // Business Routes
         '/business': (context) => BusinessLoginScreen(),
+        '/businessName': (context) => BusinessNameScreen(),
         '/businessSelect': (context) => BusinessSelectionScreen(),
         '/businessForm': (context) => BusinessFormLandingScreen(businessType: ''),
         '/businessDetails': (context) => BusinessDetailEntryScreen(),

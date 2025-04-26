@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../widgets/google_sign_in_button.dart';
+import '../../services/auth_service.dart';
 
 class BusinessLoginScreen extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class BusinessLoginScreen extends StatefulWidget {
 class _BusinessLoginScreenState extends State<BusinessLoginScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> _colorAnimation;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -28,6 +31,18 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> with SingleTi
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _signInAsGuest(BuildContext context) async {
+    try {
+      await _authService.signInAsGuest();
+      // Navigate directly to business selection
+      Navigator.pushReplacementNamed(context, '/businessSelect');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
   }
 
   @override
@@ -53,7 +68,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> with SingleTi
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Welcome to Livana',
+                      'Business Login',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -76,42 +91,19 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> with SingleTi
                     SizedBox(height: 30),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 50),
-                          backgroundColor: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        onPressed: () {
-                          // TODO: Implement Google Sign In
-                          Navigator.pushNamed(context, '/businessSelect');
-                        },
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/google_logo.png',
-                                height: 20,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Sign up with Google',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
+                      child: GoogleSignInButton(),
+                    ).animate().fadeIn(duration: 600.ms).slideY(),
+                    SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => _signInAsGuest(context),
+                      child: Text(
+                        'Continue as Guest',
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 16,
                         ),
                       ),
-                    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.3),
-                    SizedBox(height: 20),
+                    ).animate().fadeIn(duration: 600.ms),
                   ],
                 ),
               ),

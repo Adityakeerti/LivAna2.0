@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../widgets/google_sign_in_button.dart';
+import '../../services/auth_service.dart';
 
 class StudentLoginScreen extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class StudentLoginScreen extends StatefulWidget {
 class _StudentLoginScreenState extends State<StudentLoginScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> _colorAnimation;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -29,6 +31,18 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> with SingleTick
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _signInAsGuest(BuildContext context) async {
+    try {
+      await _authService.signInAsGuest();
+      // Navigate directly to student home
+      Navigator.pushReplacementNamed(context, '/studentHome');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
   }
 
   @override
@@ -79,11 +93,15 @@ class _StudentLoginScreenState extends State<StudentLoginScreen> with SingleTick
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: GoogleSignInButton(),
                     ).animate().fadeIn(duration: 600.ms).slideY(),
-                    SizedBox(height: 20),
-                    Text(
-                      'Or continue with email',
-                      style: TextStyle(
-                        color: Colors.grey[600],
+                    SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => _signInAsGuest(context),
+                      child: Text(
+                        'Continue as Guest',
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 16,
+                        ),
                       ),
                     ).animate().fadeIn(duration: 600.ms),
                   ],

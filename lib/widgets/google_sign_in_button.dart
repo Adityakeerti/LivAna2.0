@@ -10,15 +10,24 @@ class GoogleSignInButton extends StatelessWidget {
       onPressed: () async {
         try {
           final userCredential = await _authService.signInWithGoogle();
-          if (userCredential != null) {
+          if (userCredential != null && userCredential.user != null) {
             print('Successfully signed in: ${userCredential.user?.email}');
-            // Navigate to the appropriate screen after successful sign-in
-            Navigator.pushReplacementNamed(context, '/studentHome');
+            // Check if we're in student or business flow
+            final isStudentFlow = ModalRoute.of(context)?.settings.name == '/student';
+            // Navigate to the appropriate name input screen
+            Navigator.pushReplacementNamed(
+              context,
+              isStudentFlow ? '/studentName' : '/businessName',
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Sign in was cancelled')),
+            );
           }
         } catch (e) {
           print('Error during sign in: $e');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error signing in with Google')),
+            SnackBar(content: Text('Error signing in with Google: ${e.toString()}')),
           );
         }
       },

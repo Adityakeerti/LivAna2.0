@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,7 +11,9 @@ class AuthService {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       
-      if (googleUser == null) return null;
+      if (googleUser == null) {
+        throw Exception('Google sign in was cancelled');
+      }
 
       // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -25,8 +28,13 @@ class AuthService {
       return await _auth.signInWithCredential(credential);
     } catch (e) {
       print('Error signing in with Google: $e');
-      return null;
+      rethrow;
     }
+  }
+
+  // Simple guest sign-in that just returns true
+  Future<bool> signInAsGuest() async {
+    return true;
   }
 
   Future<void> signOut() async {
