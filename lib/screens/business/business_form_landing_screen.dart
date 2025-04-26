@@ -100,13 +100,15 @@ class _BusinessFormLandingScreenState extends State<BusinessFormLandingScreen> w
                           ),
                         ),
                         onPressed: () async {
-                          // TODO: Replace with your Google Form URL
-                          const url = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform';
-                          if (await canLaunchUrl(Uri.parse(url))) {
-                            await launchUrl(Uri.parse(url));
-                          } else {
+                          const url = 'https://docs.google.com/forms/d/e/1FAIpQLScBSsRexSk-dzmQqv9KjAf4pI3Xeekf3E_U2ayqAMz_53J7Ew/viewform?usp=sharing';
+                          try {
+                            await launchUrl(
+                              Uri.parse(url),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Could not launch the form')),
+                              SnackBar(content: Text('Could not open the form: $e')),
                             );
                           }
                         },
